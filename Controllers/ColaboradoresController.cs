@@ -22,7 +22,7 @@ public class ColaboradoresController : Controller
 
         if (response.IsSuccessStatusCode)
         {
-            var colaboradores = await response.Content.ReadAsAsync<List<ColaboradorModel>>();
+            var colaboradores = await response.Content.ReadFromJsonAsync<List<ColaboradorModel>>();
             return View(colaboradores);  // Exibe a lista de colaboradores
         }
 
@@ -38,7 +38,7 @@ public class ColaboradoresController : Controller
 
         if (response.IsSuccessStatusCode)
         {
-            var colaborador = await response.Content.ReadAsAsync<ColaboradorModel>();
+            var colaborador = await response.Content.ReadFromJsonAsync<ColaboradorModel>();
             return View(colaborador);
         }
 

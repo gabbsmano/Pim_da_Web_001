@@ -23,6 +23,21 @@ namespace Pim_da_Web_001.Controllers
             return View();
         }
 
+        public IActionResult Estoque()
+        {
+            return View();
+        }
+
+        public IActionResult Produtos()
+        {
+            return View();
+        }
+
+        public IActionResult Colaboradores()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
