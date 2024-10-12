@@ -28,7 +28,7 @@ namespace Pim_da_Web_001.Controllers
             return View();
         }
 
-        public IActionResult Produtos()
+        public IActionResult Fornecedor()
         {
             return View();
         }
