@@ -2,7 +2,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddHttpClient();
+
+builder.Services.AddHttpClient<FornecedorController>(c =>
+{
+    c.BaseAddress = new Uri("https://localhost:7013/"); // URL base da sua API
+});
 
 var app = builder.Build();
 
@@ -14,6 +18,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.MapControllers();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

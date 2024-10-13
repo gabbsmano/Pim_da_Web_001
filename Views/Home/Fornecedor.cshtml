@@ -1,4 +1,4 @@
-﻿@model List<Fornecedor>
+﻿@model FornecedorViewModel
 
 @{
     ViewData["Title"] = "Fornecedores";
@@ -64,9 +64,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model != null && Model.Any())
+        @if (Model != null && Model.Fornecedores.Any())
         {
-            foreach (var fornecedor in Model)
+            foreach (var fornecedor in Model.Fornecedores)
             {
                 <tr>
                     <td>@fornecedor.Nome</td>

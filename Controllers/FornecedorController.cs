@@ -15,26 +15,32 @@ public class FornecedorController : Controller
         _httpClient.BaseAddress = new Uri("https://localhost:7013/"); // URL base da sua API
     }
 
-    // GET: Fornecedores
-    public async Task<IActionResult> Index()
-    {
-        var fornecedores = await ListarFornecedores();
-        return View(fornecedores);
-    }
-
     // GET: Lista todos os fornecedores
-    [HttpGet]
-    public async Task<List<Fornecedor>> ListarFornecedores()
+    public async Task<IActionResult> Fornecedor()
     {
-        var response = await _httpClient.GetAsync("api/fornecedor");
+        var fornecedoresResponse = await _httpClient.GetAsync("/api/fornecedor");
+        var empresasResponse = await _httpClient.GetAsync("/api/empresa");
+        var municipiosResponse = await _httpClient.GetAsync("/api/municipio");
 
-        if (response.IsSuccessStatusCode)
+        if (fornecedoresResponse.IsSuccessStatusCode && empresasResponse.IsSuccessStatusCode && municipiosResponse.IsSuccessStatusCode)
         {
-            var fornecedores = await response.Content.ReadFromJsonAsync<List<Fornecedor>>();
-            return fornecedores;  // Retorna a lista de fornecedores
+            var fornecedores = await fornecedoresResponse.Content.ReadFromJsonAsync<List<Fornecedor>>();
+            var empresas = await empresasResponse.Content.ReadFromJsonAsync<List<Empresa>>();
+            var municipios = await municipiosResponse.Content.ReadFromJsonAsync<List<Municipio>>();
+
+            // Usando ViewModel para passar os dados
+            var viewModel = new FornecedorViewModel
+            {
+                Fornecedores = fornecedores ?? new List<Fornecedor>(), // Evita nulo
+                Empresas = empresas ?? new List<Empresa>(),           // Evita nulo
+                Municipios = municipios ?? new List<Municipio>()      // Evita nulo
+            };
+
+            return View(viewModel);
         }
 
-        return new List<Fornecedor>(); // Retorna uma lista vazia em caso de erro
+        ModelState.AddModelError(string.Empty, "Erro ao carregar os dados.");
+        return View(new FornecedorViewModel());
     }
 
     // GET: Detalhes de um fornecedor específico
@@ -50,7 +56,7 @@ public class FornecedorController : Controller
         }
 
         ModelState.AddModelError(string.Empty, "Erro ao carregar detalhes do fornecedor.");
-        return View();
+        return RedirectToAction("Index");
     }
 
     // POST: Cria um novo fornecedor
@@ -65,7 +71,7 @@ public class FornecedorController : Controller
         }
 
         ModelState.AddModelError(string.Empty, "Erro ao criar fornecedor.");
-        return View("Index", await ListarFornecedores()); // Recarrega a lista de fornecedores
+        return RedirectToAction("Index"); // Retorna à lista
     }
 
     // POST: Atualiza um fornecedor existente
@@ -75,10 +81,12 @@ public class FornecedorController : Controller
         var response = await _httpClient.PutAsJsonAsync($"api/fornecedor/{id}", fornecedor);
 
         if (response.IsSuccessStatusCode)
+        {
             return RedirectToAction("Index");
+        }
 
         ModelState.AddModelError(string.Empty, "Erro ao atualizar fornecedor.");
-        return View(fornecedor);
+        return RedirectToAction("Index");
     }
 
     // DELETE: Exclui um fornecedor
@@ -88,7 +96,9 @@ public class FornecedorController : Controller
         var response = await _httpClient.DeleteAsync($"api/fornecedor/{id}");
 
         if (response.IsSuccessStatusCode)
+        {
             return RedirectToAction("Index");
+        }
 
         ModelState.AddModelError(string.Empty, "Erro ao excluir fornecedor.");
         return RedirectToAction("Index");

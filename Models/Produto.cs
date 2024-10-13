@@ -3,7 +3,9 @@
     public class Produto
     {
         public Produto() { }
+
         public int ID { get; set; }
+        public Fornecedor Fornecedor { get; set; }
         public int FornecedorID { get; set; }
         public string Nome { get; set; }
         public int? ValorVendaKG { get; set; }
