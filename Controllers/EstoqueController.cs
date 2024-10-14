@@ -24,7 +24,7 @@ public class EstoqueController : Controller
 
     private async Task<List<Produto>> ObterProdutos()
     {
-        var response = await _httpClient.GetAsync("api/produto/Listar");
+        var response = await _httpClient.GetAsync("/api/produto");
 
         if (response.IsSuccessStatusCode)
         {
@@ -39,7 +39,7 @@ public class EstoqueController : Controller
     [HttpGet]
     public async Task<IActionResult> DetalhesProduto(int id)
     {
-        var response = await _httpClient.GetAsync($"api/produto/Unico?id={id}");
+        var response = await _httpClient.GetAsync($"/api/produto/Unico?id={id}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -51,19 +51,11 @@ public class EstoqueController : Controller
         return View(); // Retorna uma view vazia em caso de erro
     }
 
-    // GET: Adiciona um novo produto
-    [HttpGet]
-    public async Task<IActionResult> CriarProduto()
-    {
-        var fornecedores = await ObterFornecedores(); // Método para obter a lista de fornecedores
-        ViewBag.Fornecedores = fornecedores; // Passa a lista para a view
-        return View();
-    }
 
-    // Método fictício para obter fornecedores
+    
     private async Task<List<Fornecedor>> ObterFornecedores()
     {
-        var response = await _httpClient.GetAsync("api/fornecedor/Listar");
+        var response = await _httpClient.GetAsync("/api/fornecedor");
         if (response.IsSuccessStatusCode)
         {
             return await response.Content.ReadFromJsonAsync<List<Fornecedor>>();
@@ -72,11 +64,11 @@ public class EstoqueController : Controller
     }
 
 
-    // POST: Cria um novo produto
+    
     [HttpPost]
     public async Task<IActionResult> CriarProduto(Produto produto)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/produto", produto);
+        var response = await _httpClient.PostAsJsonAsync("/api/produto", produto);
 
         if (response.IsSuccessStatusCode)
         {
@@ -87,8 +79,8 @@ public class EstoqueController : Controller
         return RedirectToAction("Estoque","Home"); // Redireciona para Estoque em caso de erro
     }
 
-    // POST: Atualiza um produto existente
-    [HttpPost]
+    
+    [HttpPut]
     public async Task<IActionResult> AtualizarProduto(int id, Produto produto)
     {
         var response = await _httpClient.PutAsJsonAsync($"api/produto/{id}", produto);
@@ -103,10 +95,10 @@ public class EstoqueController : Controller
     }
 
     // DELETE: Exclui um produto
-    [HttpPost]
+    [HttpDelete]
     public async Task<IActionResult> ExcluirProduto(int id)
     {
-        var response = await _httpClient.DeleteAsync($"api/produto/{id}");
+        var response = await _httpClient.DeleteAsync($"/api/produto/{id}");
 
         if (response.IsSuccessStatusCode)
         {

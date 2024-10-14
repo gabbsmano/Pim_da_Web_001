@@ -75,7 +75,7 @@ public class FornecedorController : Controller
     }
 
     // POST: Atualiza um fornecedor existente
-    [HttpPost]
+    [HttpPut]
     public async Task<IActionResult> AtualizarFornecedor(int id, Fornecedor fornecedor)
     {
         var response = await _httpClient.PutAsJsonAsync($"api/fornecedor/{id}", fornecedor);
@@ -90,7 +90,7 @@ public class FornecedorController : Controller
     }
 
     // DELETE: Exclui um fornecedor
-    [HttpPost]
+    [HttpDelete]
     public async Task<IActionResult> ExcluirFornecedor(int id)
     {
         var response = await _httpClient.DeleteAsync($"api/fornecedor/{id}");

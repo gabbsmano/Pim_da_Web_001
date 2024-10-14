@@ -1,4 +1,4 @@
-﻿@model List<Produto>
+﻿@model ProdutoViewModel
 
 @{
     ViewData["Title"] = "Estoque";
@@ -21,7 +21,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="createProductForm" method="post" asp-action="CriarProduto" asp-controller="Home">
+                <form id="createProductForm" method="post" asp-action="CriarProduto" asp-controller="Estoque">
                     <div class="mb-3">
                         <label for="Nome" class="form-label">Nome do Produto</label>
                         <input type="text" class="form-control" id="Nome" name="Nome" required>
@@ -29,10 +29,19 @@
                     <div class="mb-3">
                         <label for="FornecedorID" class="form-label">Fornecedor</label>
                         <select class="form-select" id="FornecedorID" name="FornecedorID" required>
-                            <option value="">Selecione um fornecedor</option>
-                            @foreach (var fornecedor in ViewBag.Fornecedores)
+                            
+                            @if (Model != null && Model.Fornecedores.Any())
                             {
-                                <option value="@fornecedor.ID">@fornecedor.Nome</option>
+                                foreach (var fornecedor in Model.Fornecedores)
+                                {
+                                    <option value="@fornecedor.ID">@fornecedor.Nome</option>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center">Nenhum produto encontrado.</td>
+                                </tr>
                             }
                         </select>
                     </div>
@@ -65,9 +74,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model != null && Model.Any())
+        @if (Model != null && Model.Produtos.Any())
         {
-            foreach (var produto in Model)
+            foreach (var produto in Model.Produtos)
             {
                 <tr>
                     <td>@produto.ValorVendaKG</td>
