@@ -6,171 +6,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Colaborador</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Cadastro de Colaborador - Pim_da_Web_001</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Cadastro de Colaborador</h1>
-        <form action="/cadastrar-colaborador" method="POST">
-            <!-- Dados do Colaborador -->
-            <fieldset>
-                <legend>Informações do Colaborador</legend>
-                <label for="usuarioID">ID do Usuário:</label>
-                <input type="number" id="usuarioID" name="usuarioID" required>
 
-                <label for="funcao">Função:</label>
-                <input type="number" id="funcao" name="funcao" required>
-            </fieldset>
+    <div class="container main-container">
+        <!-- Botão para abrir o modal de cadastro -->
+        <div class="text-center">
+            <button type="button" class="btn btn-primary btn-cadastrar" data-bs-toggle="modal" data-bs-target="#cadastroColaboradorModal">
+                Cadastrar Colaborador
+            </button>
+        </div>
 
-            <!-- Dados do Usuário -->
-            <fieldset>
-                <legend>Informações do Usuário</legend>
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="usuario[nome]" required>
-
-                <label for="login">Login:</label>
-                <input type="text" id="login" name="usuario[login]" required>
-
-                <label for="senha">Senha:</label>
-                <input type="password" id="senha" name="usuario[senha]" required>
-
-                <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" name="usuario[telefone]" required>
-
-                <label for="acesso">Acesso:</label>
-                <input type="text" id="acesso" name="usuario[acesso]" required>
-
-                <label for="ativo">Ativo:</label>
-                <input type="checkbox" id="ativo" name="usuario[ativo]" checked>
-
-                <label for="serColaborador">É Colaborador?</label>
-                <input type="checkbox" id="serColaborador" name="usuario[serColaborador]" checked>
-            </fieldset>
-
-            <!-- Dados da Empresa -->
-            <fieldset>
-                <legend>Informações da Empresa</legend>
-                <label for="empresaID">ID da Empresa:</label>
-                <input type="number" id="empresaID" name="usuario[empresaID]" required>
-
-                <label for="empresaNome">Nome da Empresa:</label>
-                <input type="text" id="empresaNome" name="usuario[empresa][nome]" required>
-
-                <label for="cnpj">CNPJ:</label>
-                <input type="text" id="cnpj" name="usuario[empresa][cnpj]" required>
-
-                <label for="razaoSocial">Razão Social:</label>
-                <input type="text" id="razaoSocial" name="usuario[empresa][razaoSocial]" required>
-
-                <label for="empresaEmail">Email:</label>
-                <input type="email" id="empresaEmail" name="usuario[empresa][email]" required>
-
-                <label for="empresaTelefone">Telefone:</label>
-                <input type="text" id="empresaTelefone" name="usuario[empresa][telefone]" required>
-
-                <label for="tipoEmpresa">Tipo de Empresa:</label>
-                <input type="number" id="tipoEmpresa" name="usuario[empresa][tipoEmpresa]" required>
-
-                <label for="possuiFilial">Possui Filial:</label>
-                <input type="checkbox" id="possuiFilial" name="usuario[empresa][possuiFilial]" checked>
-
-                <label for="rua">Rua:</label>
-                <input type="text" id="rua" name="usuario[empresa][rua]" required>
-
-                <label for="numero">Número:</label>
-                <input type="text" id="numero" name="usuario[empresa][numero]" required>
-
-                <label for="cep">CEP:</label>
-                <input type="text" id="cep" name="usuario[empresa][cep]" required>
-
-                <label for="municipioID">ID do Município:</label>
-                <input type="number" id="municipioID" name="usuario[empresa][municipioID]" required>
-
-                <!-- Dados do Município -->
-                <label for="municipioNome">Nome do Município:</label>
-                <input type="text" id="municipioNome" name="usuario[empresa][municipio][nome]" required>
-
-                <label for="ufNome">Estado (UF):</label>
-                <input type="text" id="ufNome" name="usuario[empresa][municipio][uf][nome]" required>
-
-                <label for="ufSigla">Sigla do Estado (UF):</label>
-                <input type="text" id="ufSigla" name="usuario[empresa][municipio][uf][sigla]" required>
-            </fieldset>
-
-            <!-- Botão de Envio -->
-            <button type="submit">Cadastrar Colaborador</button>
-        </form>
+        <!-- Seção de colaboradores já cadastrados -->
+        <div class="table-section">
+            <h3>Colaboradores Cadastrados</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Função</th>
+                        <th>Empresa</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Exemplo de colaboradores cadastrados -->
+                    <tr>
+                        <td>1</td>
+                        <td>João da Silva</td>
+                        <td>Desenvolvedor</td>
+                        <td>Empresa X</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarColaboradorModal1">Editar</button>
+                            <button class="btn btn-danger btn-sm">Excluir</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Maria Souza</td>
+                        <td>Designer</td>
+                        <td>Empresa Y</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editarColaboradorModal2">Editar</button>
+                            <button class="btn btn-danger btn-sm">Excluir</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <!-- Modal para cadastro de colaborador -->
+    <div class="modal fade" id="cadastroColaboradorModal" tabindex="-1" aria-labelledby="cadastroColaboradorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cadastroColaboradorModalLabel">Cadastro de Colaborador</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCadastroColaborador">
+                        <div class="mb-3">
+                            <label for="nomeColaborador" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nomeColaborador" placeholder="Digite o nome do colaborador">
+                        </div>
+                        <div class="mb-3">
+                            <label for="funcaoColaborador" class="form-label">Função</label>
+                            <input type="text" class="form-control" id="funcaoColaborador" placeholder="Digite a função do colaborador">
+                        </div>
+                        <div class="mb-3">
+                            <label for="empresaColaborador" class="form-label">Empresa</label>
+                            <input type="text" class="form-control" id="empresaColaborador" placeholder="Digite o nome da empresa">
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailColaborador" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailColaborador" placeholder="Digite o email do colaborador">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="cadastrarColaborador()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar colaborador (Exemplo para João da Silva) -->
+    <div class="modal fade" id="editarColaboradorModal1" tabindex="-1" aria-labelledby="editarColaboradorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarColaboradorModalLabel">Editar Colaborador</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarColaborador1">
+                        <div class="mb-3">
+                            <label for="editarNomeColaborador" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="editarNomeColaborador" value="João da Silva">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarFuncaoColaborador" class="form-label">Função</label>
+                            <input type="text" class="form-control" id="editarFuncaoColaborador" value="Desenvolvedor">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarEmpresaColaborador" class="form-label">Empresa</label>
+                            <input type="text" class="form-control" id="editarEmpresaColaborador" value="Empresa X">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarEmailColaborador" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editarEmailColaborador" value="joao.silva@empresa.com">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer text-center">
+        <p>&copy; 2024 - Pim_da_Web_001 - <a href="#">Privacy</a></p>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Funções JavaScript -->
+    <script>
+        function cadastrarColaborador() {
+            // Função de exemplo para cadastrar o colaborador
+            let nome = document.getElementById("nomeColaborador").value;
+            let funcao = document.getElementById("funcaoColaborador").value;
+            let empresa = document.getElementById("empresaColaborador").value;
+            let email = document.getElementById("emailColaborador").value;
+
+            if (nome && funcao && empresa && email) {
+                alert('Colaborador ' + nome + ' cadastrado com sucesso!');
+                // Aqui você pode fazer uma chamada AJAX para cadastrar o colaborador no banco de dados
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        }
+    </script>
+
 </body>
 </html>
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
+        background-color: #f8f9fa;
     }
 
-    .container {
-        width: 60%;
-        margin: 50px auto;
+    .main-container {
+        margin-top: 50px;
+    }
+
+    .btn-cadastrar {
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-section {
         background-color: #fff;
         padding: 20px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    h1 {
-        text-align: center;
-        color: #333;
+    .footer {
+        margin-top: 50px;
     }
-
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-
-    fieldset {
-        border: 1px solid #ccc;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-
-    legend {
-        padding: 0 10px;
-        font-weight: bold;
-    }
-
-    label {
-        margin-top: 10px;
-        font-weight: bold;
-    }
-
-    input[type="text"], input[type="number"], input[type="email"], input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    input[type="checkbox"] {
-        margin-top: 5px;
-    }
-
-    button {
-        padding: 15px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-        button:hover {
-            background-color: #218838;
-        }
-
 </style>
+

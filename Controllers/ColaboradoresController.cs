@@ -42,7 +42,7 @@ public class ColaboradoresController : Controller
             return View(colaborador);
         }
 
-        ModelState.AddModelError(string.Empty, "Erro ao carregar detalhes do colaborador.");
+        ModelState.AddModelError(string.Empty, "Erro ao carregar detalhes do colaborador."); 
         return View();
     }
 
