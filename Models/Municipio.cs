@@ -4,8 +4,8 @@
     {
         public int ID { get; set; }
         public string Nome { get; set; }
-        public int UF { get; set; }
-
+        public int UFID { get; set; }
+        public Estado UF { get; set; }
         public ICollection<Fornecedor> Fornecedores { get; set; }
     }
 }
