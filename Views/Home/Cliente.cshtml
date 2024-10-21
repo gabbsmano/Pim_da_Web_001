@@ -1,84 +1,129 @@
-﻿@model ClienteViewModel
+﻿@model IEnumerable<ClienteModel>
 
-@{
-    ViewData["Title"] = "Clientes";
-}
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 
-<!-- Botão para abrir o modal -->
-<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addClientModal">
-    <i class="fas fa-plus"></i> Adicionar Produto
+<!-- Botão para abrir modal de criação -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCriarCliente">
+    <i class="fas fa-plus"></i> Novo Cliente
 </button>
 
-<!-- Modal para adicionar produto -->
-<div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addClienteModalLabel">Adicionar CLiente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="createClienteForm" method="post" asp-action="CriarCliente" asp-controller="Cliente">
-                    <div class="mb-3">;
-                        <label for="Nome" class="form-label">Nome do Cliente</label>
-                        <input type="text" class="form-control" id="Nome" name="Nome" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" onclick="submitCreateProductForm()">Salvar Produto</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="text-center">
-    <h1 class="display-4">Estoque</h1>
-</div>
-<br />
-
+<!-- Listagem de Clientes -->
+<h2>Lista de Clientes</h2>
 <table class="table">
     <thead>
         <tr>
-            <th>Valor</th>
             <th>Nome</th>
-            <th>Fornecedor</th>
+            
+            <th>Telefone</th>
+            <th>Endereço</th>
             <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-        @if (Model != null && Model.Cliente.Any())
+        @if (Model != null && Model.Any()){
+        @foreach (var cliente in Model)
         {
-            foreach (var cliente in Model.Cliente)
-            {
-                <tr>
-                    <td>@cliente.Cep</td>
-                    <td>@cliente.</td>
-                    <td>@cliente.</td>
-                    <td>
-                        <a class="btn btn-primary" asp-action="AtualizarCliente" asp-route-id="@cliente.ID"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" asp-action="ExcluirCliente" asp-route-id="@cliente.ID"><i class="fas fa-trash"></i></a>
-                    </td>
-                </tr>
-            }
+            <tr>
+                <td>@cliente.Nome</td> <!-- Nome do usuário associado ao cliente -->
+                
+                <td>@cliente.Telefone</td> <!-- Telefone do usuário associado ao cliente -->
+                <td>@cliente.Rua, @cliente.Numero, @cliente.Cep</td> <!-- Endereço do cliente -->
+                <td>
+                    <a href="/Usuario/EditarCliente/@cliente.ID">Editar</a> |
+                    <a href="/Usuario/ApagarCliente/@cliente.ID">Excluir</a>
+                </td>
+            </tr>
+        }
         }
         else
         {
             <tr>
-                <td colspan="4" class="text-center">Nenhum produto encontrado.</td>
+                <td colspan="5" class="text-center">Nenhum cliente encontrado.</td>
             </tr>
         }
     </tbody>
 </table>
 
+
+
+<!-- Modal de criação de cliente -->
+<div class="modal fade" id="modalCriarCliente" tabindex="-1" aria-labelledby="modalCriarClienteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCriarClienteLabel">Criar Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formCriarCliente">
+                    <!-- Formulário para criar um novo cliente -->
+                    <div>
+                        <label>Nome:</label>
+                        <input id="clienteNome" class="form-control" />
+                    </div>
+                    <div>
+                        <label>Login:</label>
+                        <input id="clienteLogin" class="form-control" />
+                    </div>
+                    <div>
+                        <label>Senha:</label>
+                        <input id="clienteSenha" class="form-control" type="password" />
+                    </div>
+                    <div>
+                        <label>Rua:</label>
+                        <input id="clienteRua" class="form-control" />
+                    </div>
+                    <div>
+                        <label>Número:</label>
+                        <input id="clienteNumero" class="form-control" />
+                    </div>
+                    <div>
+                        <label>CEP:</label>
+                        <input id="clienteCep" class="form-control" />
+                    </div>
+                    <div>
+                        <label>Telefone:</label>
+                        <input id="clienteTelefone" class="form-control" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="criarCliente()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    function submitCreateClienteForm() {
-        document.getElementById('createClienteForm').submit();
+    function criarCliente() {
+        var cliente = {
+            Usuario: {
+                Nome: document.getElementById('clienteNome').value,
+                Login: document.getElementById('clienteLogin').value,
+                Senha: document.getElementById('clienteSenha').value,
+                Telefone: document.getElementById('clienteTelefone').value
+            },
+            Rua: document.getElementById('clienteRua').value,
+            Numero: document.getElementById('clienteNumero').value,
+            Cep: document.getElementById('clienteCep').value
+        };
+
+        $.ajax({
+            url: '/Usuario/CriarCliente',
+            type: 'POST',
+            data: JSON.stringify(cliente),
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                // Fechar o modal após a criação
+                $('#modalCriarCliente').modal('hide');
+                // Recarregar a página ou atualizar a lista de clientes
+                location.reload();
+            },
+            error: function (error) {
+                alert("Erro ao criar cliente.");
+            }
+        });
     }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
