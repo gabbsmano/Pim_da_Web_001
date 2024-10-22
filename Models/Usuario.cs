@@ -13,3 +13,5 @@ public class ColaboradorModel : UsuarioModel
     public int Funcao { get; set; }
     public Guid? Acesso { get; set; }
 }
+
+

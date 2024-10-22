@@ -25,10 +25,10 @@ public class UsuarioController : Controller
         if (response.IsSuccessStatusCode)
         {
             var json = await response.Content.ReadAsStringAsync();
-            var clientes = JsonConvert.DeserializeObject<List<ClienteModel>>(json);
+            var clientes = JsonConvert.DeserializeObject<List<ClienteInput>>(json);
             return View(clientes);
         }
-        return View(new List<ClienteModel>());
+        return View(new List<ClienteInput>());
     }
 
     // GET: Listar Colaboradores
@@ -46,7 +46,7 @@ public class UsuarioController : Controller
 
     // POST: Criar Cliente
     [HttpPost]
-    public async Task<IActionResult> CriarCliente(ClienteModel cliente)
+    public async Task<IActionResult> CriarCliente(ClienteInput cliente)
     {
         var json = JsonConvert.SerializeObject(cliente);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -76,7 +76,7 @@ public class UsuarioController : Controller
 
     // PUT: Editar Cliente
     [HttpPost]
-    public async Task<IActionResult> EditarCliente(ClienteModel cliente)
+    public async Task<IActionResult> EditarCliente(ClienteInput cliente)
     {
         var json = JsonConvert.SerializeObject(cliente);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
