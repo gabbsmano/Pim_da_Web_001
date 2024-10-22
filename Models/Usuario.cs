@@ -8,6 +8,7 @@ public class UsuarioModel
     public bool Ativo { get; set; }
     public string Telefone { get; set; }
 }
+
 public class ColaboradorModel : UsuarioModel
 {
     public int Funcao { get; set; }

@@ -1,6 +1,6 @@
 ﻿public class ClienteInput
 {
-    public int ID { get; set; }
+    public string ID { get; set; }
     public string Nome { get; set; }
     public string? Rua { get; set; }
     public string? Numero { get; set; }
