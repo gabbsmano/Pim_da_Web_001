@@ -13,6 +13,7 @@ public class ColaboradorModel : UsuarioModel
 {
     public int Funcao { get; set; }
     public Guid? Acesso { get; set; }
+    public int Id { get; internal set; }
 }
 
 

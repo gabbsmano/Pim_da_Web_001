@@ -1,87 +1,187 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Pim_da_Web_001.Models;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-public class ColaboradoresController : Controller
+namespace Pim_da_Web_001.Controllers
 {
-    private readonly HttpClient _httpClient;
-
-    public ColaboradoresController(HttpClient httpClient)
+    public class ColaboradoresController : Controller
     {
-        _httpClient = httpClient;
-        _httpClient.BaseAddress = new Uri("https://localhost:7013/swagger/index.html"); // URL base da sua API
-    }
+        private readonly HttpClient _httpClient;
 
-    // GET: Lista todos os colaboradores
-    [HttpGet]
-    public async Task<IActionResult> Listar()
-    {
-        var response = await _httpClient.GetAsync("/api/usuario/Colaboradores/Listar");
-
-        if (response.IsSuccessStatusCode)
+        public ColaboradoresController(HttpClient httpClient)
         {
-            var colaboradores = await response.Content.ReadFromJsonAsync<List<ColaboradorModel>>();
-            return View(colaboradores);  // Exibe a lista de colaboradores
+            _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("https://localhost:7013/api/"); // Corrected base address
         }
 
-        ModelState.AddModelError(string.Empty, "Erro ao carregar colaboradores.");
-        return View();
-    }
+        // ... other code ...
 
-    // GET: Obtém detalhes de um colaborador específico
-    [HttpGet]
-    public async Task<IActionResult> Detalhes(int id)
-    {
-        var response = await _httpClient.GetAsync($"/api/usuario/Colaboradores/Unico?id={id}");
-
-        if (response.IsSuccessStatusCode)
+        // GET: Lista todos os colaboradores
+        [HttpGet]
+        public async Task<IActionResult> Listar()
         {
-            var colaborador = await response.Content.ReadFromJsonAsync<ColaboradorModel>();
-            return View(colaborador);
+            try
+            {
+                var resposta = await _httpClient.GetAsync("usuario/Colaboradores/Listar");
+                resposta.EnsureSuccessStatusCode(); // Lança exceção se o status code não for sucesso
+
+                var colaboradores = await resposta.Content.ReadFromJsonAsync<List<ColaboradorModel>>();
+
+                if (colaboradores != null)
+                {
+                    return View(colaboradores);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Erro ao carregar colaboradores.  Resposta da API não contém dados válidos.");
+                    return View();
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro ao acessar a API: {ex.Message}");
+                return View();
+            }
+            catch (JsonReaderException ex)
+            {
+                // Específico para problemas com o JSON
+                ModelState.AddModelError(string.Empty, $"Erro ao processar a resposta JSON: {ex.Message}. Verifique se a resposta da API está no formato JSON esperado.");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Tratamento genérico de exceções
+                ModelState.AddModelError(string.Empty, $"Erro inesperado: {ex.Message}");
+                return View();
+            }
         }
 
-        ModelState.AddModelError(string.Empty, "Erro ao carregar detalhes do colaborador."); 
-        return View();
-    }
 
-    // POST: Cria um novo colaborador
-    [HttpPost]
-    public async Task<IActionResult> Criar(ColaboradorModel colaborador)
-    {
-        var response = await _httpClient.PostAsJsonAsync("/api/usuario/Colaboradores", colaborador);
+        // GET: Obtém detalhes de um colaborador específico
+        [HttpGet]
+        public async Task<IActionResult> Detalhes(int id)
+        {
+            try
+            {
+                var resposta = await _httpClient.GetAsync($"usuario/Colaboradores/Unico?id={id}");
+                resposta.EnsureSuccessStatusCode(); // Lança exceção se o status code não for sucesso
 
-        if (response.IsSuccessStatusCode)
-            return RedirectToAction("Listar");
+                var colaborador = await resposta.Content.ReadFromJsonAsync<ColaboradorModel>();
 
-        ModelState.AddModelError(string.Empty, "Erro ao criar colaborador.");
-        return View(colaborador);
-    }
+                if (colaborador != null)
+                {
+                    return View(colaborador);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Erro ao carregar colaborador.  Resposta da API não contém dados válidos.");
+                    return View();
+                }
 
-    // PUT: Atualiza um colaborador existente
-    [HttpPost]  // Em ASP.NET MVC o PUT pode ser feito via POST com um campo oculto "_method" como "PUT"
-    public async Task<IActionResult> Atualizar(int id, ColaboradorModel colaborador)
-    {
-        var response = await _httpClient.PutAsJsonAsync($"/api/usuario/Colaboradores/{id}", colaborador);
+            }
+            catch (HttpRequestException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro ao acessar a API: {ex.Message}");
+                return View();
+            }
+            catch (JsonReaderException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro ao processar a resposta JSON: {ex.Message}. Verifique se a resposta da API está no formato JSON esperado.");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro inesperado: {ex.Message}");
+                return View();
+            }
+        }
 
-        if (response.IsSuccessStatusCode)
-            return RedirectToAction("Listar");
+        // ... other code ...
 
-        ModelState.AddModelError(string.Empty, "Erro ao atualizar colaborador.");
-        return View(colaborador);
-    }
+        // POST: Cria um novo colaborador
+        [HttpPost]
+        public async Task<IActionResult> Criar(ColaboradorModel colaborador)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("usuario/Colaboradores", colaborador);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Listar"); // Redirect after successful creation
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, $"Erro ao criar colaborador: {response.StatusCode}");
+                    return View(colaborador); // Return View with errors
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro ao acessar a API: {ex.Message}");
+                return View(colaborador); // Keep the view data
+            }
+        }
+        // PUT: Atualiza um colaborador específico
+        [HttpPut]
+        public async Task<IActionResult> Atualizar(int id, ColaboradorModel colaboradorAtualizado)
+        {
+            try
+            {
+                if (id != colaboradorAtualizado.Id)
+                {
+                    ModelState.AddModelError(string.Empty, "O ID do colaborador na solicitação não corresponde ao ID do colaborador a ser atualizado.");
+                    return View(colaboradorAtualizado);
+                }
 
-    // DELETE: Exclui um colaborador
-    [HttpPost]
-    public async Task<IActionResult> Excluir(int id)
-    {
-        var response = await _httpClient.DeleteAsync($"/api/usuario/Colaboradores/{id}");
+                var resposta = await _httpClient.PutAsJsonAsync($"usuario/Colaboradores/{id}", colaboradorAtualizado);
+                resposta.EnsureSuccessStatusCode(); // Verifica se a requisição teve sucesso
 
-        if (response.IsSuccessStatusCode)
-            return RedirectToAction("Listar");
+                return RedirectToAction("Listar"); //Redireciona para a página de lista após a atualização
 
-        ModelState.AddModelError(string.Empty, "Erro ao excluir colaborador.");
-        return RedirectToAction("Listar");
+            }
+            catch (HttpRequestException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro ao acessar a API: {ex.Message}");
+                return View(colaboradorAtualizado); // Retorna a view com os dados e erros
+
+            }
+            catch (JsonException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro ao processar a resposta JSON: {ex.Message}.");
+                return View(colaboradorAtualizado);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro inesperado: {ex.Message}");
+                return View(colaboradorAtualizado);
+            }
+
+        }
+
+
+        // DELETE: Exclui um colaborador
+        [HttpDelete]
+        public async Task<IActionResult> Excluir(int id)
+        {
+            try
+            {
+                var resposta = await _httpClient.DeleteAsync($"usuario/Colaboradores/{id}");
+                resposta.EnsureSuccessStatusCode(); // Lança exceção em caso de erro
+                return RedirectToAction("Listar");
+            }
+            catch (HttpRequestException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro ao acessar a API: {ex.Message}");
+                return RedirectToAction("Listar"); // Retorna a página de lista em caso de erro
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"Erro inesperado: {ex.Message}");
+                return RedirectToAction("Listar");
+            }
+        }
     }
 }
