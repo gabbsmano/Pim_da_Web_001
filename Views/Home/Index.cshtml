@@ -1,20 +1,129 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/css/site.css" rel="stylesheet" />
+    <title>Seja Bem Vindo!</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: darkgreen;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <a class="btn btn-secondary mt-4" asp-controller="Home" asp-action="Estoque">Estoque</a>
-    <a class="btn btn-secondary mt-4" asp-controller="Home" asp-action="Fornecedor">Fornecedores</a>
-    <a class="btn btn-secondary mt-4" asp-controller="Home" asp-action="Colaboradores">Novo colaborador</a>
-</div>
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
 
-<style>
-    body{
+        .menu {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
 
-    }
+        .menu button {
+            background-color: #343a40;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
+        .menu button:hover {
+            background-color: #495057;
+        }
 
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
 
+        .card {
+            background: linear-gradient(135deg, #90EE90, #3CB371, #2E8B57);
+            padding: 20px;
+            border-radius: 10px;
+            width: calc(33.33% - 26.66px);
+            box-sizing: border-box;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+            cursor: pointer;
+             transition: background-color 0.3s ease;
+        }
 
-</style>
+         .card:hover{
+             background-color: rgba(141, 174, 255, 0.2); 
+        }
+
+        .card a { 
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            padding: 20px; 
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-center">
+        <h1 class="display-4">Seja Bem Vindo!</h1>
+    </div>
+    <div class="card-container">
+        <div class="card">
+            <a href="@Url.Action("Estoque", "Home")" class="card-link">
+                <h2>Estoque</h2>
+                <p>Gerencie seu estoque aqui.</p>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="@Url.Action("Fornecedor", "Home")" class="card-link">
+                <h2>Fornecedores</h2>
+                <p>Gerencie seus fornecedores.</p>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="@Url.Action("Cliente", "Home")" class="card-link">
+                <h2>Novo Cliente</h2>
+                <p>Cadastre novos clientes.</p>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="@Url.Action("Colaboradores", "Home")" class="card-link">
+                <h2>Novo Colaborador</h2>
+                <p>Cadastre novos colaboradores.</p>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="@Url.Action("RelatorioDeVendas", "Home")" class="card-link">
+                <h2>Vendas</h2>
+                <p>Relatórios de vendas.</p>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="@Url.Action("RelatorioDeProdutividade", "Home")" class="card-link">
+                <h2>Relatórios</h2>
+                <p>Relatórios de produtividade.</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

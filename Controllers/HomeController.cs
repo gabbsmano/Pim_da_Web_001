@@ -18,11 +18,6 @@ namespace Pim_da_Web_001.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         public IActionResult Estoque()
         {
             return View();
@@ -44,6 +39,16 @@ namespace Pim_da_Web_001.Controllers
         }
 
         public IActionResult Login() 
+        {
+            return View();
+        }
+
+        public IActionResult RelatorioDeVendas()
+        {
+            return View();
+        }
+
+        public IActionResult RelatorioDeProdutividade()
         {
             return View();
         }
